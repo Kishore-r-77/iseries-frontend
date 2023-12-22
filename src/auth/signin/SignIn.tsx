@@ -98,7 +98,7 @@ export default function SignIn() {
                 required
                 fullWidth
                 id="username"
-                label="Email Address"
+                label="Phone Number"
                 name="username"
                 autoComplete="username"
                 InputLabelProps={{ shrink: true }}
