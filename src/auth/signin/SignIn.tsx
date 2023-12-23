@@ -3,7 +3,6 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   FormControl,
-  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -17,15 +16,13 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import moment from "moment";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./signin.module.css";
-import { signIn } from "./signinApi/signinApi";
-import { AuthResponseType } from "./signinTypes/signInTypes";
-import { useNavigate } from "react-router";
+import { useSignIn } from "../../contexts/SignInContext";
 
 function Copyright(props: any) {
   return (
@@ -46,31 +43,17 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [phoneNumber, setphoneNumber] = useState<string>("");
-  const [password, setpassword] = useState<string>("");
-  const [authResponse, setauthResponse] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const { phoneNumber, setphoneNumber, password, setpassword, handleSubmit } =
+    useSignIn();
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    signIn({ phoneNumber, password })
-      .then((resp: AuthResponseType) => {
-        setauthResponse(resp?.data);
-        navigate("/home");
-      })
-      .catch((err: Error) => {
-        console.log(err);
-      });
   };
 
   return (
@@ -106,6 +89,7 @@ export default function SignIn() {
                 label="Phone Number"
                 name="username"
                 autoComplete="username"
+                value={phoneNumber}
                 InputLabelProps={{ shrink: true }}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setphoneNumber(e.target.value)

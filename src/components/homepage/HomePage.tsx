@@ -1,7 +1,11 @@
+import { useSignIn } from "../../contexts/SignInContext";
+
 function HomePage() {
+  const { authResponse } = useSignIn();
+
   return (
     <div>
-      <h1>HomePage</h1>
+      <h1>{authResponse?.username}</h1>
     </div>
   );
 }
