@@ -3,6 +3,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -24,6 +25,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import styles from "./signin.module.css";
 import { signIn } from "./signinApi/signinApi";
 import { AuthResponseType } from "./signinTypes/signInTypes";
+import { useNavigate } from "react-router";
 
 function Copyright(props: any) {
   return (
@@ -49,6 +51,8 @@ export default function SignIn() {
   const [authResponse, setauthResponse] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
@@ -62,6 +66,7 @@ export default function SignIn() {
     signIn({ phoneNumber, password })
       .then((resp: AuthResponseType) => {
         setauthResponse(resp?.data);
+        navigate("/home");
       })
       .catch((err: Error) => {
         console.log(err);
