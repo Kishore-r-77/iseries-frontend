@@ -6,6 +6,7 @@ import HomePage from "./components/homepage/HomePage";
 import SideBar from "./utilities/sidebar/Sidebar";
 import "./App.css";
 import SignInContextProvider from "./contexts/SignInContext";
+import RuleHeader from "./components/ruleHeader/RuleHeader";
 
 function App() {
   const { pathname } = useLocation();
@@ -24,6 +25,7 @@ function App() {
                   <Route element={<CustomNavbar />}>
                     <Route element={<CustomFooter />}>
                       <Route path="/home" element={<HomePage />} />
+                      <Route path="/bizRules" element={<RuleHeader />} />
                     </Route>
                   </Route>
                 </Routes>

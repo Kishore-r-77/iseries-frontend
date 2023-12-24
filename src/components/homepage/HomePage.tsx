@@ -5,7 +5,13 @@ function HomePage() {
 
   return (
     <div>
-      <h1>{authResponse?.username}</h1>
+      {authResponse ? (
+        <h1>
+          Welcome, {authResponse.username}! my number is {authResponse.userid}
+        </h1>
+      ) : (
+        <p>Please sign in to view this page.</p>
+      )}
     </div>
   );
 }
