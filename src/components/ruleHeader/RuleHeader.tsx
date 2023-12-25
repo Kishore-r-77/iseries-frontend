@@ -97,6 +97,7 @@ function RuleHeader() {
         };
 
       case ACTIONS.ADDCLOSE:
+        state = initialValues;
         return {
           ...state,
           addOpen: false,
@@ -144,7 +145,7 @@ function RuleHeader() {
   const getData = () => {
     return getAllApi(token!)
       .then((resp) => {
-        setData(resp.data);
+        setData(resp?.data?.body?.data);
       })
       .catch((err) => console.log(err.message));
   };

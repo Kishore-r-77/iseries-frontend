@@ -1,5 +1,4 @@
 import axios from "axios";
-import moment from "moment";
 
 export const getAllApi = (token: string) => {
   return axios.get(`http://localhost:8080/bizrules/ruleHeaders`, {
@@ -11,7 +10,7 @@ export const getAllApi = (token: string) => {
 
 export const addApi = (state: any, token: string) => {
   return axios.post(
-    `http://localhost:8080/bizrules/ruleHeaders`,
+    `http://localhost:8080/bizrules/ruleHeader`,
     {
       company: state.company,
       rulename: state.rulename,
