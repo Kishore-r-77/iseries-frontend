@@ -1,18 +1,18 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, MenuItem, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useEffect, useReducer, useState } from "react";
+import { useSignIn } from "../../contexts/SignInContext";
+import Notification from "../../utilities/notification/Notification";
+import CustomTable from "../../utilities/table/CustomTable";
 import styles from "./ruleHeader.module.css";
+import { addApi, editApi, getAllApi } from "./ruleHeaderApis/ruleHeaderApi";
+import RuleHeaderModal from "./ruleHeaderModal/RuleHeaderModal";
 import {
   ACTIONS,
   columns,
   initialValues,
 } from "./ruleTypesActions/ruleHeaderActions";
-import Notification from "../../utilities/notification/Notification";
-import { useSignIn } from "../../contexts/SignInContext";
-import { addApi, editApi, getAllApi } from "./ruleHeaderApis/ruleHeaderApi";
-import CustomTable from "../../utilities/table/CustomTable";
-import RuleHeaderModal from "./ruleHeaderModal/RuleHeaderModal";
 
 function RuleHeader() {
   //data from getall api
