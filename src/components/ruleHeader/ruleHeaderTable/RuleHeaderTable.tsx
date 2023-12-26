@@ -136,7 +136,12 @@ function RuleHeaderTable({
                       />
                     </>
                   )}
-                  <InfoIcon onClick={() => navigate("/ruleKey")} />
+                  <InfoIcon
+                    onClick={() => {
+                      dispatch({ type: ACTIONS.RULEKEYOPEN });
+                      navigate("/ruleKey");
+                    }}
+                  />
                   {showClone && (
                     <ContentCopyIcon
                       onClick={() =>
