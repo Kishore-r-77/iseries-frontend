@@ -4,10 +4,15 @@ import { Button, TextField } from "@mui/material";
 import { useEffect, useReducer, useState } from "react";
 import { useSignIn } from "../../contexts/SignInContext";
 import Notification from "../../utilities/notification/Notification";
-import CustomTable from "../../utilities/table/CustomTable";
 import styles from "./ruleHeader.module.css";
-import { addApi, editApi, getAllApi } from "./ruleHeaderApis/ruleHeaderApi";
+import {
+  addApi,
+  editApi,
+  getAllApi,
+  getRuleKey,
+} from "./ruleHeaderApis/ruleHeaderApi";
 import RuleHeaderModal from "./ruleHeaderModal/RuleHeaderModal";
+import RuleHeaderTable from "./ruleHeaderTable/RuleHeaderTable";
 import {
   ACTIONS,
   columns,
@@ -16,7 +21,7 @@ import {
 
 function RuleHeader() {
   //data from getall api
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
   const { authResponse } = useSignIn();
 
   const token = authResponse?.accessToken;
@@ -30,39 +35,10 @@ function RuleHeader() {
     type: "",
   });
 
-  //Function for Conversion of Base64
-  const convertBase64 = (file: any) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-
   //Reducer Function to be used inside UserReducer hook
   const reducer = (state: any, action: any) => {
     switch (action.type) {
       case ACTIONS.ONCHANGE:
-        if (action.fieldName === "CompanyLogo") {
-          convertBase64(action.payload).then((resp) => {
-            return {
-              ...state,
-              CompanyLogo: resp,
-            };
-          });
-        } else
-          return {
-            ...state,
-            [action.fieldName]: action.payload,
-          };
-
         return {
           ...state,
           addOpen: true,
@@ -95,6 +71,12 @@ function RuleHeader() {
           ...state,
           infoOpen: true,
         };
+      case ACTIONS.RULEKEYOPEN:
+        setRecord(action.payload);
+        return {
+          ...state,
+          ruleKeyOpen: true,
+        };
 
       case ACTIONS.ADDCLOSE:
         state = initialValues;
@@ -112,6 +94,11 @@ function RuleHeader() {
         return {
           ...state,
           infoOpen: false,
+        };
+      case ACTIONS.RULEKEYCLOSE:
+        return {
+          ...state,
+          ruleKeyOpen: false,
         };
       case ACTIONS.SORT_ASC:
         const asc = !state.sortAsc;
@@ -140,12 +127,27 @@ function RuleHeader() {
 
   //Creating useReducer Hook
   const [state, dispatch] = useReducer(reducer, initialValues);
+  const [ruleKeyData, setruleKeyData] = useState([]);
 
   //Get all Api
   const getData = () => {
     return getAllApi(token!)
       .then((resp) => {
         setData(resp?.data?.body?.data);
+      })
+      .catch((err) => console.log(err.message));
+  };
+  const getRuleKeysData = () => {
+    return getRuleKey(
+      token!,
+      data?.language,
+      data?.rulename,
+      data?.company,
+      true
+    )
+      .then((resp) => {
+        setruleKeyData(resp?.body?.data);
+        console.log(resp?.body?.data);
       })
       .catch((err) => console.log(err.message));
   };
@@ -197,6 +199,11 @@ function RuleHeader() {
     getData();
     return () => {};
   }, []);
+
+  useEffect(() => {
+    getRuleKeysData();
+    return () => {};
+  }, [state.ruleKeyOpen]);
 
   return (
     <div>
@@ -251,7 +258,7 @@ function RuleHeader() {
           <AddBoxIcon />
         </Button>
       </header>
-      <CustomTable
+      <RuleHeaderTable
         data={data}
         columns={columns}
         ACTIONS={ACTIONS}
@@ -265,6 +272,7 @@ function RuleHeader() {
         handleFormSubmit={state.addOpen ? handleFormSubmit : editFormSubmit}
         ACTIONS={ACTIONS}
       />
+
       <Notification notify={notify} setNotify={setNotify} />
     </div>
   );

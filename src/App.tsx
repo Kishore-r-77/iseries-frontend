@@ -7,6 +7,7 @@ import SideBar from "./utilities/sidebar/Sidebar";
 import "./App.css";
 import SignInContextProvider from "./contexts/SignInContext";
 import RuleHeader from "./components/ruleHeader/RuleHeader";
+import RuleKeys from "./components/ruleHeader/ruleKeys/RuleKeys";
 
 function App() {
   const { pathname } = useLocation();
@@ -26,6 +27,7 @@ function App() {
                     <Route element={<CustomFooter />}>
                       <Route path="/home" element={<HomePage />} />
                       <Route path="/bizRules" element={<RuleHeader />} />
+                      <Route path="/ruleKey" element={<RuleKeys />} />
                     </Route>
                   </Route>
                 </Routes>

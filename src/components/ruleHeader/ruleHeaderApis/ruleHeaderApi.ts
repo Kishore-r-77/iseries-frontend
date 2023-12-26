@@ -7,6 +7,25 @@ export const getAllApi = (token: string) => {
     },
   });
 };
+export const getRuleKey = (
+  token: string,
+  language: string,
+  ruleNameEquals: string,
+  company: string,
+  getSearchfields: boolean
+) => {
+  return axios.get(`http://localhost:8080/bizrules/ruleKeys`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      language,
+      ruleNameEquals,
+      company,
+      getSearchfields,
+    },
+  });
+};
 
 export const addApi = (state: any, token: string) => {
   return axios.post(
