@@ -10,6 +10,7 @@ import { useState } from "react";
 import Table from "react-bootstrap/Table";
 import styles from "./ruleHeader.module.css";
 import { useNavigate } from "react-router";
+import { useRuleKey } from "../../../contexts/RuleKeyContext";
 
 function RuleHeaderTable({
   data,
@@ -21,6 +22,7 @@ function RuleHeaderTable({
   hardDelete,
   modalFunc,
   showClone,
+  handleRuleKeyOpen,
 }: any) {
   const [sort, setsort] = useState(
     sortParam && sortParam.fieldName
@@ -29,6 +31,14 @@ function RuleHeaderTable({
   );
 
   const navigate = useNavigate();
+
+  const { ruleHeaderObj, setruleHeaderObj } = useRuleKey();
+
+  const handleRuleKeyComponent = (obj: any) => {
+    setruleHeaderObj(obj);
+    handleRuleKeyOpen();
+    navigate("/ruleKey");
+  };
 
   return (
     <Paper className={styles.paperStyle}>
@@ -136,12 +146,7 @@ function RuleHeaderTable({
                       />
                     </>
                   )}
-                  <InfoIcon
-                    onClick={() => {
-                      dispatch({ type: ACTIONS.RULEKEYOPEN });
-                      navigate("/ruleKey");
-                    }}
-                  />
+                  <InfoIcon onClick={() => handleRuleKeyComponent(row)} />
                   {showClone && (
                     <ContentCopyIcon
                       onClick={() =>

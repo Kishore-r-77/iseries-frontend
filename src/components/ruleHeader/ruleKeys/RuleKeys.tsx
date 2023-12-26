@@ -1,6 +1,6 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Button, TextField } from "@mui/material";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import CustomTable from "../../../utilities/table/CustomTable";
 import styles from "./ruleKeys.module.css";
@@ -11,12 +11,31 @@ import {
   initialValues,
 } from "./ruleKeysModal/ruleTypesActions/ruleKeysActions";
 import { useNavigate } from "react-router";
+import { useRuleKey } from "../../../contexts/RuleKeyContext";
 
-function RuleKeys({ data }: any) {
+function RuleKeys() {
   const navigate = useNavigate();
 
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});
+
+  const {
+    ruleKeyData,
+    setruleKeyData,
+    getRuleKeysData,
+    isrulekeyOpen,
+    setisrulekeyOpen,
+    handleRuleKeyOpen,
+    handleRuleKeyClose,
+    kishore,
+  } = useRuleKey();
+
+  useEffect(() => {
+    getRuleKeysData();
+    return () => {};
+  }, []);
+
+  console.log(ruleKeyData, "It's just me uzzz");
 
   //Reducer Function to be used inside UserReducer hook
   const reducer = (state: any, action: any) => {
@@ -104,7 +123,7 @@ function RuleKeys({ data }: any) {
         </Button>
       </header>
       <CustomTable
-        data={data}
+        data={ruleKeyData}
         columns={columns}
         ACTIONS={ACTIONS}
         dispatch={dispatch}

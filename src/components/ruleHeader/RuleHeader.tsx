@@ -18,13 +18,27 @@ import {
   columns,
   initialValues,
 } from "./ruleTypesActions/ruleHeaderActions";
+import { useRuleKey } from "../../contexts/RuleKeyContext";
 
 function RuleHeader() {
   //data from getall api
-  const [data, setData] = useState<any>([]);
+
   const { authResponse } = useSignIn();
 
   const token = authResponse?.accessToken;
+
+  const {
+    ruleKeyData,
+    setruleKeyData,
+    getRuleKeysData,
+    isrulekeyOpen,
+    setisrulekeyOpen,
+    handleRuleKeyOpen,
+    handleRuleKeyClose,
+    ruleHeaderData,
+    setruleHeaderData,
+    getRuleHeader,
+  } = useRuleKey();
 
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});
@@ -67,6 +81,7 @@ function RuleHeader() {
 
       case ACTIONS.INFOOPEN:
         setRecord(action.payload);
+
         return {
           ...state,
           infoOpen: true,
@@ -127,30 +142,8 @@ function RuleHeader() {
 
   //Creating useReducer Hook
   const [state, dispatch] = useReducer(reducer, initialValues);
-  const [ruleKeyData, setruleKeyData] = useState([]);
 
   //Get all Api
-  const getData = () => {
-    return getAllApi(token!)
-      .then((resp) => {
-        setData(resp?.data?.body?.data);
-      })
-      .catch((err) => console.log(err.message));
-  };
-  const getRuleKeysData = () => {
-    return getRuleKey(
-      token!,
-      data?.language,
-      data?.rulename,
-      data?.company,
-      true
-    )
-      .then((resp) => {
-        setruleKeyData(resp?.body?.data);
-        console.log(resp?.body?.data);
-      })
-      .catch((err) => console.log(err.message));
-  };
 
   //Add Api
   const handleFormSubmit = () => {
@@ -162,7 +155,7 @@ function RuleHeader() {
           message: `Created: ${resp?.data?.Result}`,
           type: "success",
         });
-        getData();
+        getRuleHeader();
       })
       .catch((err) => {
         setNotify({
@@ -183,7 +176,7 @@ function RuleHeader() {
           type: "success",
         });
         dispatch({ type: ACTIONS.EDITCLOSE });
-        getData();
+        getRuleHeader();
       })
       .catch((err) =>
         setNotify({
@@ -196,7 +189,7 @@ function RuleHeader() {
 
   //UseEffect Function to render data on Screen Based on Dependencies
   useEffect(() => {
-    getData();
+    getRuleHeader();
     return () => {};
   }, []);
 
@@ -224,7 +217,7 @@ function RuleHeader() {
           />
           <Button
             variant="contained"
-            onClick={getData}
+            onClick={getRuleHeader}
             color="primary"
             style={{
               marginTop: "0.5rem",
@@ -259,10 +252,11 @@ function RuleHeader() {
         </Button>
       </header>
       <RuleHeaderTable
-        data={data}
+        data={ruleHeaderData}
         columns={columns}
         ACTIONS={ACTIONS}
         dispatch={dispatch}
+        handleRuleKeyOpen={handleRuleKeyOpen}
       />
 
       <RuleHeaderModal

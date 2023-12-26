@@ -8,33 +8,36 @@ import "./App.css";
 import SignInContextProvider from "./contexts/SignInContext";
 import RuleHeader from "./components/ruleHeader/RuleHeader";
 import RuleKeys from "./components/ruleHeader/ruleKeys/RuleKeys";
+import RuleKeyContextProvider from "./contexts/RuleKeyContext";
 
 function App() {
   const { pathname } = useLocation();
   return (
     <>
       <SignInContextProvider>
-        <div className="App">
-          <Routes>
-            <Route path="/" element={<SignIn />} />
-            {/* <Route path="/signup" element={<Signup />} /> */}
-          </Routes>
-          {pathname !== "/" && pathname !== "/signup" && (
-            <>
-              <SideBar>
-                <Routes>
-                  <Route element={<CustomNavbar />}>
-                    <Route element={<CustomFooter />}>
-                      <Route path="/home" element={<HomePage />} />
-                      <Route path="/bizRules" element={<RuleHeader />} />
-                      <Route path="/ruleKey" element={<RuleKeys />} />
+        <RuleKeyContextProvider>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<SignIn />} />
+              {/* <Route path="/signup" element={<Signup />} /> */}
+            </Routes>
+            {pathname !== "/" && pathname !== "/signup" && (
+              <>
+                <SideBar>
+                  <Routes>
+                    <Route element={<CustomNavbar />}>
+                      <Route element={<CustomFooter />}>
+                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/bizRules" element={<RuleHeader />} />
+                        <Route path="/ruleKey" element={<RuleKeys />} />
+                      </Route>
                     </Route>
-                  </Route>
-                </Routes>
-              </SideBar>
-            </>
-          )}
-        </div>
+                  </Routes>
+                </SideBar>
+              </>
+            )}
+          </div>
+        </RuleKeyContextProvider>
       </SignInContextProvider>
     </>
   );
