@@ -46,15 +46,12 @@ function RuleHeaderTable({
         <thead className={styles.header}>
           <tr>
             {columns?.map(
-              (
-                column: {
-                  field: string;
-                  header: string;
-                  dbField: string;
-                  sortable: boolean;
-                },
-                index: number
-              ) => (
+              (column: {
+                field: string;
+                header: string;
+                dbField: string;
+                sortable: boolean;
+              }) => (
                 <th key={column.dbField} className={styles.header}>
                   {column.header}
                   {column?.sortable && (
