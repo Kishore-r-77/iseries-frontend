@@ -5,12 +5,7 @@ import { useEffect, useReducer, useState } from "react";
 import { useSignIn } from "../../contexts/SignInContext";
 import Notification from "../../utilities/notification/Notification";
 import styles from "./ruleHeader.module.css";
-import {
-  addApi,
-  editApi,
-  getAllApi,
-  getRuleKey,
-} from "./ruleHeaderApis/ruleHeaderApi";
+import { addApi, editApi } from "./ruleHeaderApis/ruleHeaderApi";
 import RuleHeaderModal from "./ruleHeaderModal/RuleHeaderModal";
 import RuleHeaderTable from "./ruleHeaderTable/RuleHeaderTable";
 import {
@@ -27,18 +22,8 @@ function RuleHeader() {
 
   const token = authResponse?.accessToken;
 
-  const {
-    ruleKeyData,
-    setruleKeyData,
-    getRuleKeysData,
-    isrulekeyOpen,
-    setisrulekeyOpen,
-    handleRuleKeyOpen,
-    handleRuleKeyClose,
-    ruleHeaderData,
-    setruleHeaderData,
-    getRuleHeader,
-  } = useRuleKey();
+  const { getRuleKeysData, handleRuleKeyOpen, ruleHeaderData, getRuleHeader } =
+    useRuleKey();
 
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});

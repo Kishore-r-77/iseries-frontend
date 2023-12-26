@@ -32,7 +32,7 @@ function RuleHeaderTable({
 
   const navigate = useNavigate();
 
-  const { ruleHeaderObj, setruleHeaderObj } = useRuleKey();
+  const { setruleHeaderObj } = useRuleKey();
 
   const handleRuleKeyComponent = (obj: any) => {
     setruleHeaderObj(obj);

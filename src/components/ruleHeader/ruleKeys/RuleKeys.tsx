@@ -19,23 +19,12 @@ function RuleKeys() {
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});
 
-  const {
-    ruleKeyData,
-    setruleKeyData,
-    getRuleKeysData,
-    isrulekeyOpen,
-    setisrulekeyOpen,
-    handleRuleKeyOpen,
-    handleRuleKeyClose,
-    kishore,
-  } = useRuleKey();
+  const { ruleKeyData, getRuleKeysData } = useRuleKey();
 
   useEffect(() => {
     getRuleKeysData();
     return () => {};
   }, []);
-
-  console.log(ruleKeyData, "It's just me uzzz");
 
   //Reducer Function to be used inside UserReducer hook
   const reducer = (state: any, action: any) => {
