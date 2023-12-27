@@ -218,7 +218,7 @@ function RuleHeader() {
           </Button>
         </span>
 
-        <h1>Biz Rules</h1>
+        <h1>Rule Header</h1>
         <Button
           id={styles["add-btn"]}
           style={{

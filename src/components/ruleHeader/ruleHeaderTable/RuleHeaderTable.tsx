@@ -36,6 +36,7 @@ function RuleHeaderTable({
 
   const handleRuleKeyComponent = (obj: any) => {
     setruleHeaderObj(obj);
+    sessionStorage.setItem("ruleHeaderObject", JSON.stringify(obj));
     handleRuleKeyOpen();
     navigate("/ruleKey");
   };

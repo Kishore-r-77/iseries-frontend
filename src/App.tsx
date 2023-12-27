@@ -28,7 +28,7 @@ function App() {
                     <Route element={<CustomNavbar />}>
                       <Route element={<CustomFooter />}>
                         <Route path="/home" element={<HomePage />} />
-                        <Route path="/bizRules" element={<RuleHeader />} />
+                        <Route path="/ruleHeader" element={<RuleHeader />} />
                         <Route path="/ruleKey" element={<RuleKeys />} />
                       </Route>
                     </Route>

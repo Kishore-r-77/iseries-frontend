@@ -96,7 +96,6 @@ function RuleKeys() {
 
         <h1>Rule Keys</h1>
         <Button
-          id={styles["add-btn"]}
           style={{
             marginTop: "1rem",
             maxWidth: "40px",
@@ -107,7 +106,10 @@ function RuleKeys() {
           }}
           variant="contained"
           color="primary"
-          onClick={() => navigate("/bizRules")}
+          onClick={() => {
+            navigate("/ruleHeader");
+            sessionStorage.removeItem("ruleHeaderObject");
+          }}
         >
           <ArrowBackIcon />
         </Button>
@@ -144,7 +146,7 @@ function RuleKeys() {
       <RuleKeyDataModal
         open={state.infoOpen}
         record={record}
-        handleClose={() => dispatch({ type: ACTIONS.INFOCLOSE })}
+        handleClose={() => dispatch({ type: ACTIONS.RULEKEYOPEN })}
       />
     </div>
   );

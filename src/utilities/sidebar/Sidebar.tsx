@@ -20,8 +20,8 @@ const routes = [
     icon: <AdminPanelSettingsIcon />,
     subRoutes: [
       {
-        path: "/bizRules",
-        name: "Biz Rules",
+        path: "/ruleHeader",
+        name: "Rule Header",
         icon: <ArrowRightAltIcon />,
       },
     ],

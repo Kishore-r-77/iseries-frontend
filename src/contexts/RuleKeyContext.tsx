@@ -35,12 +35,20 @@ function RuleKeyContextProvider({ children }: any) {
       })
       .catch((err) => console.log(err.message));
   };
+
+  const storedRuleHeaderObject = sessionStorage.getItem("ruleHeaderObject");
+  const parsedRuleHeaderObject = storedRuleHeaderObject
+    ? JSON.parse(storedRuleHeaderObject)
+    : null;
+
+  console.log(parsedRuleHeaderObject, "parsedRuleHeaderObject");
+
   const getRuleKeysData = () => {
     return getRuleKey(
       token!,
-      ruleHeaderObj?.language,
-      ruleHeaderObj?.rulename,
-      ruleHeaderObj?.company,
+      parsedRuleHeaderObject?.language,
+      parsedRuleHeaderObject?.rulename,
+      parsedRuleHeaderObject?.company,
       true
     )
       .then((resp: any) => {
