@@ -65,11 +65,7 @@ export const columns = [
     header: "Active Flag",
     dbField: "activeflag",
   },
-  {
-    field: "data",
-    header: "Data",
-    dbField: "data",
-  },
+
   {
     field: "user",
     header: "User",

@@ -1,17 +1,18 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useReducer, useState } from "react";
-
-import CustomTable from "../../../utilities/table/CustomTable";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router";
+import { useRuleKey } from "../../../contexts/RuleKeyContext";
+import RuleKeyTable from "./ruleKeyTable/RuleKeyTable";
 import styles from "./ruleKeys.module.css";
 import RuleKeysModal from "./ruleKeysModal/RuleKeyModal";
 import {
   ACTIONS,
   columns,
   initialValues,
-} from "./ruleKeysModal/ruleTypesActions/ruleKeysActions";
-import { useNavigate } from "react-router";
-import { useRuleKey } from "../../../contexts/RuleKeyContext";
+} from "./ruleTypesActions/ruleKeysActions";
+import RuleKeyDataModal from "./ruleKeysModal/RuleKeyDataModal";
 
 function RuleKeys() {
   const navigate = useNavigate();
@@ -108,10 +109,26 @@ function RuleKeys() {
           color="primary"
           onClick={() => navigate("/bizRules")}
         >
+          <ArrowBackIcon />
+        </Button>
+        <Button
+          id={styles["add-btn"]}
+          style={{
+            marginTop: "1rem",
+            maxWidth: "40px",
+            maxHeight: "40px",
+            minWidth: "40px",
+            minHeight: "40px",
+            backgroundColor: "#0a3161",
+          }}
+          variant="contained"
+          color="primary"
+          onClick={() => dispatch({ type: ACTIONS.ADDOPEN })}
+        >
           <AddBoxIcon />
         </Button>
       </header>
-      <CustomTable
+      <RuleKeyTable
         data={ruleKeyData}
         columns={columns}
         ACTIONS={ACTIONS}
@@ -123,6 +140,11 @@ function RuleKeys() {
         record={record}
         dispatch={dispatch}
         ACTIONS={ACTIONS}
+      />
+      <RuleKeyDataModal
+        open={state.infoOpen}
+        record={record}
+        handleClose={() => dispatch({ type: ACTIONS.INFOCLOSE })}
       />
     </div>
   );
