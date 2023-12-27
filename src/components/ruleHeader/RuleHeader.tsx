@@ -40,7 +40,7 @@ function RuleHeader() {
       case ACTIONS.ONCHANGE:
         return {
           ...state,
-          [action.fieldName]: action.payload,
+          addOpen: true,
         };
 
       case ACTIONS.EDITCHANGE:
@@ -50,7 +50,7 @@ function RuleHeader() {
         }));
         return {
           ...state,
-          [action.fieldName]: action.payload,
+          editOpen: true,
         };
       case ACTIONS.ADDOPEN:
         return {
@@ -127,6 +127,8 @@ function RuleHeader() {
 
   //Creating useReducer Hook
   const [state, dispatch] = useReducer(reducer, initialValues);
+
+  //Get all Api
 
   //Add Api
   const handleFormSubmit = () => {

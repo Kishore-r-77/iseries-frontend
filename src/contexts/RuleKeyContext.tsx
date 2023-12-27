@@ -41,8 +41,6 @@ function RuleKeyContextProvider({ children }: any) {
     ? JSON.parse(storedRuleHeaderObject)
     : null;
 
-  console.log(parsedRuleHeaderObject, "parsedRuleHeaderObject");
-
   const getRuleKeysData = () => {
     return getRuleKey(
       token!,
