@@ -40,7 +40,6 @@ function RuleHeader() {
       case ACTIONS.ONCHANGE:
         return {
           ...state,
-          addOpen: true,
         };
 
       case ACTIONS.EDITCHANGE:
@@ -50,7 +49,6 @@ function RuleHeader() {
         }));
         return {
           ...state,
-          editOpen: true,
         };
       case ACTIONS.ADDOPEN:
         return {

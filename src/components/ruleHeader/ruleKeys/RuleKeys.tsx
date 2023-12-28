@@ -28,7 +28,6 @@ function RuleKeys() {
       case ACTIONS.ONCHANGE:
         return {
           ...state,
-          addOpen: true,
         };
 
       case ACTIONS.EDITCHANGE:
@@ -38,7 +37,6 @@ function RuleKeys() {
         }));
         return {
           ...state,
-          editOpen: true,
         };
       case ACTIONS.ADDOPEN:
         return {
