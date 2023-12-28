@@ -30,6 +30,8 @@ export const initialValues: any = {
   language: "",
   shortdesc: "",
   longdesc: "",
+  addOpen: false,
+  editOpen: false,
   infoOpen: false,
 };
 
@@ -49,7 +51,7 @@ export const columns = [
   },
   { field: "ruleprog", header: "Rule Program", dbField: "ruleprog" },
   { field: "activeflag", header: "Active Flag", dbField: "activeflag" },
-  { field: "data", header: "Data", dbField: "data" },
+
   {
     field: "language",
     header: "Language",

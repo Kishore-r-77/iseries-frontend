@@ -22,14 +22,35 @@ function RuleKeys() {
 
   const { ruleKeyData, getRuleKeysData } = useRuleKey();
 
-  useEffect(() => {
-    getRuleKeysData();
-    return () => {};
-  }, []);
-
   //Reducer Function to be used inside UserReducer hook
   const reducer = (state: any, action: any) => {
     switch (action.type) {
+      case ACTIONS.ONCHANGE:
+        return {
+          ...state,
+          addOpen: true,
+        };
+
+      case ACTIONS.EDITCHANGE:
+        setRecord((prev: any) => ({
+          ...prev,
+          [action.fieldName]: action.payload,
+        }));
+        return {
+          ...state,
+          editOpen: true,
+        };
+      case ACTIONS.ADDOPEN:
+        return {
+          ...state,
+          addOpen: true,
+        };
+      case ACTIONS.EDITOPEN:
+        setRecord(action.payload);
+        return {
+          ...state,
+          editOpen: true,
+        };
       case ACTIONS.INFOOPEN:
         setRecord(action.payload);
         return {
@@ -74,6 +95,11 @@ function RuleKeys() {
 
   //Creating useReducer Hook
   const [state, dispatch] = useReducer(reducer, initialValues);
+
+  useEffect(() => {
+    getRuleKeysData();
+    return () => {};
+  }, []);
 
   return (
     <div>
@@ -144,7 +170,7 @@ function RuleKeys() {
         ACTIONS={ACTIONS}
       />
       <RuleKeyDataModal
-        open={state.infoOpen}
+        state={state}
         record={record}
         handleClose={() => dispatch({ type: ACTIONS.RULEKEYOPEN })}
       />

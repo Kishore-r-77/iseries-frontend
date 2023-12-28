@@ -1,32 +1,62 @@
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import CustomModal from "../../../../utilities/modal/CustomModal";
 import { TextField } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { useEffect, useState } from "react";
+import { useSignIn } from "../../../../contexts/SignInContext";
+import CustomModal from "../../../../utilities/modal/CustomModal";
+import { modifyRuleKey } from "../ruleKeysApi/ruleKeysApi";
+import { useRuleKey } from "../../../../contexts/RuleKeyContext";
 
-function RuleKeyDataModal({ open, handleClose, record }: any) {
+function RuleKeyDataModal({ state, handleClose, record }: any) {
   const title: string = "Rule Key Data";
   const size: string = "xl";
 
-  const ruleKeyData = record?.data ? JSON.parse(record.data) : {};
+  const { authResponse } = useSignIn();
+
+  const token = authResponse?.accessToken;
+  const [ruleKeyData, setruleKeyData] = useState<any>({});
+  useEffect(() => {
+    let parsedRuleKeyData = record?.data ? JSON.parse(record.data) : {};
+    setruleKeyData(parsedRuleKeyData);
+  }, [record]);
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setruleKeyData((prev: any) => ({ ...prev, [name]: value }));
+    console.log(`name-${name}, value-${value}`);
+  };
+
+  const editFormSubmit = () => {
+    return modifyRuleKey(record, token, ruleKeyData)
+      .then((resp: any) => {
+        console.log(resp);
+        handleClose();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <CustomModal
-      open={open}
+      open={state.editOpen ? state.editOpen : state.infoOpen}
       handleClose={handleClose}
       size={size}
       title={title}
+      handleFormSubmit={state.editOpen ? editFormSubmit : null}
     >
       <Grid2 container spacing={2}>
         {Object.keys(ruleKeyData).map((key: string) => (
           <Grid2 key={key} xs={8} md={6} lg={6}>
             <TextField
-              id={`${key}-textfield`}
-              name={`${key}-textfield`}
+              id={`${key}`}
+              name={`${key}`}
               placeholder={key}
               value={ruleKeyData[key]}
               InputLabelProps={{ shrink: true }}
-              label={`${key}-textfield`}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleEditChange(e)
+              }
+              label={`${key}`}
               fullWidth
-              inputProps={{ readOnly: true }}
+              inputProps={{ readOnly: state.infoOpen }}
               margin="dense"
             />
           </Grid2>
