@@ -47,11 +47,11 @@ export const columns = [
     header: "Rule Name",
     dbField: "rulename",
   },
-  {
-    field: "rulekey",
-    header: "Rule Key",
-    dbField: "rulekey",
-  },
+  // {
+  //   field: "rulekey",
+  //   header: "Rule Key",
+  //   dbField: "rulekey",
+  // },
   { field: "seqno", header: "Seq No", dbField: "seqno" },
   { field: "fromDate", header: "From Date", dbField: "fromDate" },
   { field: "toDate", header: "To Date", dbField: "toDate" },
@@ -70,6 +70,5 @@ export const columns = [
     field: "user",
     header: "User",
     dbField: "user",
-    type: "date",
   },
 ];

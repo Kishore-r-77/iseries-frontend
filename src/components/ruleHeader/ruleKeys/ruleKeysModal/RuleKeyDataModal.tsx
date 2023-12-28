@@ -16,12 +16,12 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
   useEffect(() => {
     let parsedRuleKeyData = record?.data ? JSON.parse(record.data) : {};
     setruleKeyData(parsedRuleKeyData);
+    return () => {};
   }, [record]);
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setruleKeyData((prev: any) => ({ ...prev, [name]: value }));
-    console.log(`name-${name}, value-${value}`);
   };
 
   const editFormSubmit = () => {
