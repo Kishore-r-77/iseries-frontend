@@ -26,10 +26,10 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
     } else {
       setruleKeyData(parsedRuleKeyData);
     }
-    const storedRuleKeyData = sessionStorage.getItem("ruleKeyData");
-    if (storedRuleKeyData) {
-      setruleKeyData(JSON.parse(storedRuleKeyData));
-    }
+    // const storedRuleKeyData = sessionStorage.getItem("ruleKeyData");
+    // if (storedRuleKeyData) {
+    //   setruleKeyData(JSON.parse(storedRuleKeyData));
+    // }
     return () => {};
   }, [record]);
 
@@ -55,7 +55,7 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
   };
 
   const editFormSubmit = () => {
-    sessionStorage.setItem("ruleKeyData", JSON.stringify(ruleKeyData));
+    // sessionStorage.setItem("ruleKeyData", JSON.stringify(ruleKeyData));
     return modifyRuleKey(record, token, ruleKeyData)
       .then((resp: any) => {
         console.log(resp);

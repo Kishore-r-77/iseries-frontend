@@ -96,7 +96,7 @@ function RuleKeys() {
 
   useEffect(() => {
     getRuleKeysData();
-    sessionStorage.removeItem("ruleKeyData");
+    // sessionStorage.removeItem("ruleKeyData");
     return () => {};
   }, []);
 
