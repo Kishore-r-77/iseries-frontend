@@ -28,6 +28,7 @@ function RuleKeys() {
       case ACTIONS.ONCHANGE:
         return {
           ...state,
+          [action.fieldName]: action.payload,
         };
 
       case ACTIONS.EDITCHANGE:
