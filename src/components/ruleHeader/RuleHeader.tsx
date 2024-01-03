@@ -38,6 +38,15 @@ function RuleHeader() {
   const reducer = (state: any, action: any) => {
     switch (action.type) {
       case ACTIONS.ONCHANGE:
+        if (action.fieldName === "ruleType") {
+          return {
+            ...state,
+            data: {
+              ...state.data,
+              [action.fieldName]: action.payload,
+            },
+          };
+        }
         return {
           ...state,
           [action.fieldName]: action.payload,

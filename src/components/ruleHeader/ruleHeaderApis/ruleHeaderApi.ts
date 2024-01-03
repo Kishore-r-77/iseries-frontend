@@ -36,7 +36,7 @@ export const addApi = (state: any, token: string) => {
       ruleprog: state.ruleprog,
       language: state.language,
       longdesc: state.longdesc,
-      data: state.data,
+      data: JSON.stringify(state.data),
     },
     {
       headers: {

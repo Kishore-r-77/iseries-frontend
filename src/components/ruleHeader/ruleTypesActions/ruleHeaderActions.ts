@@ -25,7 +25,9 @@ export const initialValues: any = {
   toDate: "",
   ruleprog: "",
   activeflag: "",
-  data: "",
+  data: {
+    ruleType: "",
+  },
   user: "",
   addOpen: false,
   editOpen: false,

@@ -1,6 +1,6 @@
-import { TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomModal from "../../../utilities/modal/CustomModal";
 
 function RuleHeaderModal({
@@ -14,6 +14,20 @@ function RuleHeaderModal({
   const editTitle: string = "Rule Header Edit";
   const infoTitle: string = "Rule Header Info";
   const size: string = "xl";
+
+  const [ruleTypeData, setruleTypeData] = useState(
+    record?.data ? JSON.parse(record?.data) : ""
+  );
+
+  const handleRuleType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setruleTypeData((prev: any) => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    setruleTypeData(record?.data ? JSON.parse(record?.data) : "");
+    return () => {};
+  }, [record]);
 
   return (
     <div>
@@ -144,22 +158,32 @@ function RuleHeaderModal({
             </Grid2>
             <Grid2 xs={8} md={6} lg={4}>
               <TextField
+                select
                 id="data"
                 name="data"
-                value={state.addOpen ? state.data : record.data}
+                value={
+                  state.addOpen ? state.data.ruleType : ruleTypeData.ruleType
+                }
                 placeholder="Data"
                 label="Data"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  dispatch({
-                    type: state.addOpen ? ACTIONS.ONCHANGE : ACTIONS.EDITCHANGE,
-                    payload: e.target.value,
-                    fieldName: "data",
-                  })
+                  state.addOpen
+                    ? dispatch({
+                        type: ACTIONS.ONCHANGE,
+                        payload: e.target.value,
+                        fieldName: "ruleType",
+                      })
+                    : (e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleRuleType(e)
                 }
                 fullWidth
                 inputProps={{ readOnly: state.infoOpen }}
                 margin="dense"
-              />
+              >
+                <MenuItem value="0">0</MenuItem>
+                <MenuItem value="1">1</MenuItem>
+                <MenuItem value="d">d</MenuItem>
+              </TextField>
             </Grid2>
           </Grid2>
         </form>
