@@ -24,15 +24,6 @@ function RuleHeaderModal({
     setruleTypeData((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  // useEffect(() => {
-  //   setruleTypeData((prev: any) =>
-  //     record?.data ? JSON.parse(record.data) : prev
-  //   );
-  //   return () => {};
-  // }, [record]);
-
-  console.log(ruleTypeData.ruleType, "ruleTypeData");
-
   return (
     <div>
       <CustomModal

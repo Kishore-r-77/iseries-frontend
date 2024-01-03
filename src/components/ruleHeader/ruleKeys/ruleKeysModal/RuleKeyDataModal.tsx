@@ -15,7 +15,12 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
 
   const token = authResponse?.accessToken;
   function isObject(value: any) {
-    return typeof value === "object" && value !== null && !Array.isArray(value);
+    return (
+      typeof value === "object" &&
+      value !== null &&
+      !Array.isArray(value) &&
+      !value.hasOwnProperty("data")
+    );
   }
   const [ruleKeyData, setruleKeyData] = useState<any>({} || []);
 
@@ -42,16 +47,21 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
     index: number
   ) => {
     const { name, value } = e.target;
-    setruleKeyData((prev: any) =>
-      prev.map((items: any, i: number) => {
-        if (index === i) {
-          return {
-            ...items,
-            [name]: value,
-          };
-        } else return items;
-      })
-    );
+
+    setruleKeyData((prev: any) => {
+      if (!prev || !prev.data || !Array.isArray(prev.data)) {
+        // Handle the case when the structure is not as expected
+        console.error("Invalid data structure");
+        return prev;
+      }
+
+      return {
+        ...prev,
+        data: prev.data.map((items: any, i: number) =>
+          index === i ? { ...items, [name]: value } : items
+        ),
+      };
+    });
   };
 
   const editFormSubmit = () => {
@@ -63,6 +73,8 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
       })
       .catch((err) => console.log(err));
   };
+
+  console.log(ruleKeyData, "ruleKeyData");
 
   return (
     <CustomModal
@@ -92,7 +104,7 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
                 />
               </Grid2>
             ))
-          : ruleKeyData?.map((value: any, index: number) => (
+          : ruleKeyData?.data?.map((value: any, index: number) => (
               <>
                 {Object?.keys(value)?.map((key: string) => (
                   <Grid2 key={key} xs={8} md={6} lg={6}>
