@@ -4,14 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useSignIn } from "../../../../contexts/SignInContext";
 import CustomModal from "../../../../utilities/modal/CustomModal";
 import { modifyRuleKey } from "../ruleKeysApi/ruleKeysApi";
-import { useRuleKey } from "../../../../contexts/RuleKeyContext";
 
 function RuleKeyDataModal({ state, handleClose, record }: any) {
   const title: string = "Rule Key Data";
   const size: string = "xl";
 
   const { authResponse } = useSignIn();
-  const { getRuleKeysData } = useRuleKey();
 
   const token = authResponse?.accessToken;
   function isObject(value: any) {
