@@ -6,6 +6,8 @@ import CustomModal from "../../../utilities/modal/CustomModal";
 function RuleHeaderModal({
   state,
   record,
+  ruleTypeData,
+  setruleTypeData,
   dispatch,
   ACTIONS,
   handleFormSubmit,
@@ -15,19 +17,21 @@ function RuleHeaderModal({
   const infoTitle: string = "Rule Header Info";
   const size: string = "xl";
 
-  const [ruleTypeData, setruleTypeData] = useState(
-    record?.data ? JSON.parse(record?.data) : ""
-  );
-
   const handleRuleType = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("podu");
+
     setruleTypeData((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    setruleTypeData(record?.data ? JSON.parse(record?.data) : "");
-    return () => {};
-  }, [record]);
+  // useEffect(() => {
+  //   setruleTypeData((prev: any) =>
+  //     record?.data ? JSON.parse(record.data) : prev
+  //   );
+  //   return () => {};
+  // }, [record]);
+
+  console.log(ruleTypeData.ruleType, "ruleTypeData");
 
   return (
     <div>
@@ -160,7 +164,7 @@ function RuleHeaderModal({
               <TextField
                 select
                 id="data"
-                name="data"
+                name="ruleType"
                 value={
                   state.addOpen ? state.data.ruleType : ruleTypeData.ruleType
                 }
@@ -173,8 +177,7 @@ function RuleHeaderModal({
                         payload: e.target.value,
                         fieldName: "ruleType",
                       })
-                    : (e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleRuleType(e)
+                    : handleRuleType(e)
                 }
                 fullWidth
                 inputProps={{ readOnly: state.infoOpen }}

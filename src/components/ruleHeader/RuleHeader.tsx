@@ -27,6 +27,7 @@ function RuleHeader() {
 
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});
+  const [ruleTypeData, setruleTypeData] = useState({});
 
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -67,6 +68,7 @@ function RuleHeader() {
         };
       case ACTIONS.EDITOPEN:
         setRecord(action.payload);
+        setruleTypeData(JSON.parse(action.payload.data));
         return {
           ...state,
           editOpen: true,
@@ -255,6 +257,8 @@ function RuleHeader() {
       <RuleHeaderModal
         state={state}
         record={record}
+        ruleTypeData={ruleTypeData}
+        setruleTypeData={setruleTypeData}
         dispatch={dispatch}
         handleFormSubmit={state.addOpen ? handleFormSubmit : editFormSubmit}
         ACTIONS={ACTIONS}
