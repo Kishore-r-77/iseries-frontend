@@ -1,9 +1,11 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect, useState } from "react";
 import { useSignIn } from "../../../../contexts/SignInContext";
 import CustomModal from "../../../../utilities/modal/CustomModal";
 import { modifyRuleKey } from "../ruleKeysApi/ruleKeysApi";
+import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function RuleKeyDataModal({ state, handleClose, record }: any) {
   const title: string = "Rule Key Data";
@@ -12,6 +14,7 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
   const { authResponse } = useSignIn();
 
   const token = authResponse?.accessToken;
+
   function isObject(value: any) {
     return (
       typeof value === "object" &&
@@ -20,35 +23,28 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
       !value.hasOwnProperty("data")
     );
   }
-  const [ruleKeyData, setruleKeyData] = useState<any>({} || []);
+
+  const [ruleKeyData, setRuleKeyData] = useState<any>({});
 
   useEffect(() => {
     let parsedRuleKeyData = record?.data ? JSON.parse(record.data) : {};
-    if (isObject(parsedRuleKeyData)) {
-      setruleKeyData(parsedRuleKeyData);
-    } else {
-      setruleKeyData(parsedRuleKeyData);
-    }
-    // const storedRuleKeyData = sessionStorage.getItem("ruleKeyData");
-    // if (storedRuleKeyData) {
-    //   setruleKeyData(JSON.parse(storedRuleKeyData));
-    // }
+    setRuleKeyData(parsedRuleKeyData);
     return () => {};
   }, [record]);
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setruleKeyData((prev: any) => ({ ...prev, [name]: value }));
+    setRuleKeyData((prev: any) => ({ ...prev, [name]: value }));
   };
+
   const handleEditChangeArray = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
     const { name, value } = e.target;
 
-    setruleKeyData((prev: any) => {
+    setRuleKeyData((prev: any) => {
       if (!prev || !prev.data || !Array.isArray(prev.data)) {
-        // Handle the case when the structure is not as expected
         console.error("Invalid data structure");
         return prev;
       }
@@ -63,7 +59,6 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
   };
 
   const editFormSubmit = () => {
-    // sessionStorage.setItem("ruleKeyData", JSON.stringify(ruleKeyData));
     return modifyRuleKey(record, token, ruleKeyData)
       .then((resp: any) => {
         console.log(resp);
@@ -72,7 +67,29 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
       .catch((err) => console.log(err));
   };
 
-  console.log(ruleKeyData, "ruleKeyData");
+  const handleAddField = () => {
+    setRuleKeyData((prev: any) => {
+      const keys = Object.keys(prev?.data[0]); // Extract keys from the first object
+      const resultObject: any = {};
+      keys.forEach((key) => {
+        resultObject[key] = "";
+      });
+
+      const newData = [...(prev.data || []), resultObject];
+
+      return {
+        ...prev,
+        data: newData,
+      };
+    });
+  };
+
+  const handleDeleteField = (index: number) => {
+    setRuleKeyData((prev: any) => ({
+      ...prev,
+      data: prev.data.filter((item: any, i: number) => i !== index),
+    }));
+  };
 
   return (
     <CustomModal
@@ -103,9 +120,9 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
               </Grid2>
             ))
           : ruleKeyData?.data?.map((value: any, index: number) => (
-              <>
-                {Object?.keys(value)?.map((key: string) => (
-                  <Grid2 key={key} xs={8} md={6} lg={6}>
+              <React.Fragment key={index}>
+                {Object.keys(value).map((key: string) => (
+                  <Grid2 key={`${index}-${key}`} xs={8} md={6} lg={4}>
                     <TextField
                       name={`${key}`}
                       placeholder={key}
@@ -121,7 +138,48 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
                     />
                   </Grid2>
                 ))}
-              </>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                  }}
+                >
+                  {!state.infoOpen && ruleKeyData.data.length < 5 ? (
+                    <Grid2 xs={12} md={12} lg={12}>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleAddField()}
+                        style={{
+                          maxWidth: "40px",
+                          maxHeight: "40px",
+                          minWidth: "40px",
+                          minHeight: "40px",
+                          backgroundColor: "#0a3161",
+                        }}
+                      >
+                        <AddBoxRoundedIcon />
+                      </Button>
+                    </Grid2>
+                  ) : null}
+                  {!state.infoOpen && ruleKeyData.data.length !== 1 ? (
+                    <Grid2 key={`actions-${index}`} xs={4} md={2} lg={2}>
+                      <Button
+                        onClick={() => handleDeleteField(index)}
+                        variant="contained"
+                        style={{
+                          maxWidth: "40px",
+                          maxHeight: "40px",
+                          minWidth: "40px",
+                          minHeight: "40px",
+                          backgroundColor: "crimson",
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Grid2>
+                  ) : null}
+                </div>
+              </React.Fragment>
             ))}
       </Grid2>
     </CustomModal>
