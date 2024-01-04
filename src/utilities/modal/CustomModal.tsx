@@ -11,6 +11,7 @@ function CustomModal({
   saveButton = "Save",
   closeButton = "Close",
   isBackground = false,
+  isfullscreen = false,
 }: any) {
   return (
     <div>
@@ -18,6 +19,7 @@ function CustomModal({
         show={open}
         onHide={handleClose}
         centered
+        fullscreen={isfullscreen}
         size={size}
         style={{
           background: isBackground

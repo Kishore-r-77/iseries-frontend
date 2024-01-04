@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, MenuItem, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect, useState } from "react";
 import { useSignIn } from "../../../../contexts/SignInContext";
@@ -95,6 +95,7 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
     <CustomModal
       open={state.editOpen ? state.editOpen : state.infoOpen}
       handleClose={handleClose}
+      isfullscreen={Array.isArray(ruleKeyData.data)}
       size={size}
       title={title}
       handleFormSubmit={state.editOpen ? editFormSubmit : null}
@@ -120,66 +121,93 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
               </Grid2>
             ))
           : ruleKeyData?.data?.map((value: any, index: number) => (
-              <React.Fragment key={index}>
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  width: "90%",
+                  justifyContent: "center",
+                  margin: "10px auto",
+                }}
+              >
                 {Object.keys(value).map((key: string) => (
-                  <Grid2 key={`${index}-${key}`} xs={8} md={6} lg={4}>
-                    <TextField
-                      name={`${key}`}
-                      placeholder={key}
-                      value={value[key]}
-                      InputLabelProps={{ shrink: true }}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleEditChangeArray(e, index)
-                      }
-                      label={`${key}`}
-                      fullWidth
-                      inputProps={{ readOnly: state.infoOpen }}
-                      margin="dense"
-                    />
+                  <Grid2 key={`${index}-${key}`} xs={8} md={6} lg={2}>
+                    {key === "mandatory" ? (
+                      <TextField
+                        select
+                        name={`${key}`}
+                        placeholder={key}
+                        value={value[key]}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleEditChangeArray(e, index)
+                        }
+                        label={`${key}`}
+                        fullWidth
+                        inputProps={{ readOnly: state.infoOpen }}
+                        margin="dense"
+                      >
+                        <MenuItem value="Yes">Yes</MenuItem>
+                        <MenuItem value="No">No</MenuItem>
+                      </TextField>
+                    ) : (
+                      <TextField
+                        name={`${key}`}
+                        placeholder={key}
+                        value={value[key]}
+                        InputLabelProps={{ shrink: true }}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleEditChangeArray(e, index)
+                        }
+                        label={`${key}`}
+                        fullWidth
+                        inputProps={{ readOnly: state.infoOpen }}
+                        margin="dense"
+                      />
+                    )}
                   </Grid2>
                 ))}
                 <div
                   style={{
                     display: "flex",
-                    alignItems: "baseline",
+                    alignItems: "center",
+                    gap: "5px",
                   }}
                 >
-                  {!state.infoOpen && ruleKeyData.data.length < 5 ? (
-                    <Grid2 xs={12} md={12} lg={12}>
-                      <Button
-                        variant="contained"
-                        onClick={() => handleAddField()}
-                        style={{
-                          maxWidth: "40px",
-                          maxHeight: "40px",
-                          minWidth: "40px",
-                          minHeight: "40px",
-                          backgroundColor: "#0a3161",
-                        }}
-                      >
-                        <AddBoxRoundedIcon />
-                      </Button>
-                    </Grid2>
-                  ) : null}
                   {!state.infoOpen && ruleKeyData.data.length !== 1 ? (
-                    <Grid2 key={`actions-${index}`} xs={4} md={2} lg={2}>
-                      <Button
-                        onClick={() => handleDeleteField(index)}
-                        variant="contained"
-                        style={{
-                          maxWidth: "40px",
-                          maxHeight: "40px",
-                          minWidth: "40px",
-                          minHeight: "40px",
-                          backgroundColor: "crimson",
-                        }}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Grid2>
+                    <Button
+                      onClick={() => handleDeleteField(index)}
+                      variant="contained"
+                      style={{
+                        maxWidth: "40px",
+                        maxHeight: "40px",
+                        minWidth: "40px",
+                        minHeight: "40px",
+                        backgroundColor: "crimson",
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  ) : null}
+                  {!state.infoOpen &&
+                  ruleKeyData.data.length - 1 === index &&
+                  ruleKeyData.data.length < 5 ? (
+                    <Button
+                      variant="contained"
+                      onClick={() => handleAddField()}
+                      style={{
+                        maxWidth: "40px",
+                        maxHeight: "40px",
+                        minWidth: "40px",
+                        minHeight: "40px",
+                        backgroundColor: "#0a3161",
+                      }}
+                    >
+                      <AddBoxRoundedIcon />
+                    </Button>
                   ) : null}
                 </div>
-              </React.Fragment>
+              </div>
             ))}
       </Grid2>
     </CustomModal>
