@@ -87,7 +87,7 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
   const handleDeleteField = (index: number) => {
     setRuleKeyData((prev: any) => ({
       ...prev,
-      data: prev.data.filter((item: any, i: number) => i !== index),
+      data: prev.data.filter((_item: any, i: number) => i !== index),
     }));
   };
 
