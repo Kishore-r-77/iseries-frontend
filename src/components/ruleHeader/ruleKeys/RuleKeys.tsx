@@ -13,14 +13,26 @@ import {
   initialValues,
 } from "./ruleTypesActions/ruleKeysActions";
 import RuleKeyDataModal from "./ruleKeysModal/RuleKeyDataModal";
+import RuleKeyAddModal from "./ruleKeysModal/RuleKeyAddModal";
+import { addRuleKey } from "./ruleKeysApi/ruleKeysApi";
+import { useSignIn } from "../../../contexts/SignInContext";
+import Notification from "../../../utilities/notification/Notification";
 
 function RuleKeys() {
   const navigate = useNavigate();
 
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});
+  const { authResponse } = useSignIn();
 
+  const token = authResponse?.accessToken;
   const { ruleKeyData, getRuleKeysData } = useRuleKey();
+
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
 
   //Reducer Function to be used inside UserReducer hook
   const reducer = (state: any, action: any) => {
@@ -94,6 +106,26 @@ function RuleKeys() {
 
   //Creating useReducer Hook
   const [state, dispatch] = useReducer(reducer, initialValues);
+
+  const handleFormSubmit = () => {
+    return addRuleKey(state, token!)
+      .then((resp) => {
+        dispatch({ type: ACTIONS.ADDCLOSE });
+        setNotify({
+          isOpen: true,
+          message: `Created: ${resp?.data?.Result}`,
+          type: "success",
+        });
+        getRuleKeysData();
+      })
+      .catch((err) => {
+        setNotify({
+          isOpen: true,
+          message: err?.response?.data?.error,
+          type: "error",
+        });
+      });
+  };
 
   useEffect(() => {
     getRuleKeysData();
@@ -169,11 +201,19 @@ function RuleKeys() {
         dispatch={dispatch}
         ACTIONS={ACTIONS}
       />
+      <RuleKeyAddModal
+        state={state}
+        record={record}
+        dispatch={dispatch}
+        ACTIONS={ACTIONS}
+        handleFormSubmit={handleFormSubmit}
+      />
       <RuleKeyDataModal
         state={state}
         record={record}
-        handleClose={() => dispatch({ type: ACTIONS.RULEKEYOPEN })}
+        handleClose={() => dispatch({ type: ACTIONS.RULEKEYCLOSE })}
       />
+      <Notification notify={notify} setNotify={setNotify} />
     </div>
   );
 }
