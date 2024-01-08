@@ -59,7 +59,7 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
   };
 
   const editFormSubmit = () => {
-    return modifyRuleKey(record, token, ruleKeyData)
+    return modifyRuleKey(record, token, ruleKeyData, false)
       .then((resp: any) => {
         console.log(resp);
         handleClose();

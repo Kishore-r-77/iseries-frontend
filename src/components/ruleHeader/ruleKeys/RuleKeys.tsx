@@ -1,22 +1,21 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useReducer, useState } from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router";
 import { useRuleKey } from "../../../contexts/RuleKeyContext";
+import { useSignIn } from "../../../contexts/SignInContext";
+import Notification from "../../../utilities/notification/Notification";
 import RuleKeyTable from "./ruleKeyTable/RuleKeyTable";
 import styles from "./ruleKeys.module.css";
-import RuleKeysModal from "./ruleKeysModal/RuleKeyModal";
+import { addRuleKey, modifyRuleKey } from "./ruleKeysApi/ruleKeysApi";
+import RuleKeyAddModal from "./ruleKeysModal/RuleKeyAddModal";
+import RuleKeyDataModal from "./ruleKeysModal/RuleKeyDataModal";
 import {
   ACTIONS,
   columns,
   initialValues,
 } from "./ruleTypesActions/ruleKeysActions";
-import RuleKeyDataModal from "./ruleKeysModal/RuleKeyDataModal";
-import RuleKeyAddModal from "./ruleKeysModal/RuleKeyAddModal";
-import { addRuleKey } from "./ruleKeysApi/ruleKeysApi";
-import { useSignIn } from "../../../contexts/SignInContext";
-import Notification from "../../../utilities/notification/Notification";
 
 function RuleKeys() {
   const navigate = useNavigate();
@@ -117,6 +116,7 @@ function RuleKeys() {
           type: "success",
         });
         getRuleKeysData();
+        modifyRuleKey(state, token, state.data, true);
       })
       .catch((err) => {
         setNotify({
@@ -195,12 +195,12 @@ function RuleKeys() {
         dispatch={dispatch}
       />
 
-      <RuleKeysModal
+      {/* <RuleKeysModal
         state={state}
         record={record}
         dispatch={dispatch}
         ACTIONS={ACTIONS}
-      />
+      /> */}
       <RuleKeyAddModal
         state={state}
         record={record}
@@ -211,7 +211,11 @@ function RuleKeys() {
       <RuleKeyDataModal
         state={state}
         record={record}
-        handleClose={() => dispatch({ type: ACTIONS.RULEKEYCLOSE })}
+        handleClose={
+          state.editOpen
+            ? () => dispatch({ type: ACTIONS.EDITCLOSE })
+            : () => dispatch({ type: ACTIONS.INFOCLOSE })
+        }
       />
       <Notification notify={notify} setNotify={setNotify} />
     </div>

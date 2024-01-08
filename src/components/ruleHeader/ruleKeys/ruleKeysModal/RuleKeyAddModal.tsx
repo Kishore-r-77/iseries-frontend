@@ -9,13 +9,7 @@ function RuleKeyAddModal({ state, dispatch, ACTIONS, handleFormSubmit }: any) {
   return (
     <div>
       <CustomModal
-        open={
-          state.addOpen
-            ? state.addOpen
-            : state.editOpen
-            ? state.editOpen
-            : state.infoOpen
-        }
+        open={state.addOpen}
         size={size}
         handleClose={() => dispatch({ type: ACTIONS.ADDCLOSE })}
         title={addTitle}
@@ -33,7 +27,7 @@ function RuleKeyAddModal({ state, dispatch, ACTIONS, handleFormSubmit }: any) {
                 label="Prefix"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   dispatch({
-                    type: state.addOpen ? ACTIONS.ONCHANGE : ACTIONS.EDITCHANGE,
+                    type: ACTIONS.ONCHANGE,
                     payload: e.target.value,
                     fieldName: "prefix",
                   })
@@ -217,6 +211,24 @@ function RuleKeyAddModal({ state, dispatch, ACTIONS, handleFormSubmit }: any) {
                     type: ACTIONS.ONCHANGE,
                     payload: e.target.value,
                     fieldName: "itmto",
+                  })
+                }
+                fullWidth
+                margin="dense"
+              />
+            </Grid2>
+            <Grid2 xs={8} md={6} lg={4}>
+              <TextField
+                id="data"
+                name="data"
+                value={state.data}
+                placeholder="Data"
+                label="Data"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch({
+                    type: ACTIONS.ONCHANGE,
+                    payload: e.target.value,
+                    fieldName: "data",
                   })
                 }
                 fullWidth

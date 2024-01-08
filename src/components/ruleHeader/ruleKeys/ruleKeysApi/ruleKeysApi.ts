@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const addRuleKey = (state: any, token: string | undefined) => {
-  return axios.put(
+  return axios.post(
     `http://localhost:8080/bizrules/ruleKey`,
     {
       prefix: state.prefix,
@@ -27,7 +27,8 @@ export const addRuleKey = (state: any, token: string | undefined) => {
 export const modifyRuleKey = (
   state: any,
   token: string | undefined,
-  ruleKeyData: any
+  ruleKeyData: any,
+  isAddComponent: boolean
 ) => {
   return axios.put(
     `http://localhost:8080/bizrules/ruleKey`,
@@ -41,7 +42,7 @@ export const modifyRuleKey = (
       toDate: state.toDate,
       ruleprog: state.ruleprog,
       activeflag: state.activeflag,
-      data: JSON.stringify(ruleKeyData),
+      data: isAddComponent ? ruleKeyData : JSON.stringify(ruleKeyData),
       user: state.user,
       language: "E",
       shortdesc: "SSSS",
