@@ -110,25 +110,49 @@ function RuleKeys() {
   const handleFormSubmit = () => {
     return addRuleKey(state, token!)
       .then((resp) => {
-        dispatch({ type: ACTIONS.ADDCLOSE });
-        setNotify({
-          isOpen: true,
-          message: `Created: ${resp?.data?.Result}`,
-          type: "success",
-        });
-        getRuleKeysData();
-        modifyRuleKey(state, token, state.data, true)
-          .then((_resp) => {
-            let parsedRuleKeyData = record?.data ? JSON.parse(record.data) : {};
-            setRuleKeyObj(parsedRuleKeyData);
-            getRuleKeysData();
-          })
-          .catch((err) => console.log(err));
+        if (resp?.data?.status === "SUCCESS") {
+          setNotify({
+            isOpen: true,
+            message: `Created: ${resp?.data?.Result}`,
+            type: "success",
+          });
+          dispatch({ type: ACTIONS.ADDCLOSE });
+          getRuleKeysData();
+          modifyRuleKey(state, token, state.data, true)
+            .then((resp) => {
+              if (resp?.data?.status === "SUCCESS") {
+                let parsedRuleKeyData = record?.data
+                  ? JSON.parse(record.data)
+                  : {};
+                setRuleKeyObj(parsedRuleKeyData);
+
+                getRuleKeysData();
+                setNotify({
+                  isOpen: true,
+                  message: `Updated: ${resp?.data?.body}`,
+                  type: "success",
+                });
+              } else {
+                setNotify({
+                  isOpen: true,
+                  message: `Update Failed:${resp?.data?.body?.validationErrors[0]?.errorDescription}`,
+                  type: "error",
+                });
+              }
+            })
+            .catch((err) => console.log(err));
+        } else {
+          setNotify({
+            isOpen: true,
+            message: ` ${resp?.data?.body?.validationErrors[0]?.errorDescription}`,
+            type: "error",
+          });
+        }
       })
-      .catch((err) => {
+      .catch((_err) => {
         setNotify({
           isOpen: true,
-          message: err?.response?.data?.error,
+          message: "Something Went Wrong",
           type: "error",
         });
       });
@@ -201,12 +225,6 @@ function RuleKeys() {
         dispatch={dispatch}
       />
 
-      {/* <RuleKeysModal
-        state={state}
-        record={record}
-        dispatch={dispatch}
-        ACTIONS={ACTIONS}
-      /> */}
       <RuleKeyAddModal
         state={state}
         record={record}
