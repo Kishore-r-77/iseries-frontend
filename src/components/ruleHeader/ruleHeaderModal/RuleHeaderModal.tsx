@@ -19,8 +19,6 @@ function RuleHeaderModal({
 
   const handleRuleType = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("podu");
-
     setruleTypeData((prev: any) => ({ ...prev, [name]: value }));
   };
 
