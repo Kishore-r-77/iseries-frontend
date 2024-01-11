@@ -7,7 +7,13 @@ import { modifyRuleKey } from "../ruleKeysApi/ruleKeysApi";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function RuleKeyDataModal({ state, handleClose, record }: any) {
+function RuleKeyDataModal({
+  state,
+  handleClose,
+  record,
+  ruleKeyData,
+  setRuleKeyData,
+}: any) {
   const title: string = "Rule Key Data";
   const size: string = "xl";
 
@@ -23,8 +29,6 @@ function RuleKeyDataModal({ state, handleClose, record }: any) {
       !value.hasOwnProperty("data")
     );
   }
-
-  const [ruleKeyData, setRuleKeyData] = useState<any>({});
 
   useEffect(() => {
     let parsedRuleKeyData = record?.data ? JSON.parse(record.data) : {};

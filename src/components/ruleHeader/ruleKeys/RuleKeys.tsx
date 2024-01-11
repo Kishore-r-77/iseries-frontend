@@ -23,6 +23,7 @@ function RuleKeys() {
   //data got after rendering from table
   const [record, setRecord] = useState<any>({});
   const { authResponse } = useSignIn();
+  const [ruleKeyObj, setRuleKeyObj] = useState<any>({});
 
   const token = authResponse?.accessToken;
   const { ruleKeyData, getRuleKeysData } = useRuleKey();
@@ -116,7 +117,13 @@ function RuleKeys() {
           type: "success",
         });
         getRuleKeysData();
-        modifyRuleKey(state, token, state.data, true);
+        modifyRuleKey(state, token, state.data, true)
+          .then((_resp) => {
+            let parsedRuleKeyData = record?.data ? JSON.parse(record.data) : {};
+            setRuleKeyObj(parsedRuleKeyData);
+            getRuleKeysData();
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => {
         setNotify({
@@ -129,7 +136,6 @@ function RuleKeys() {
 
   useEffect(() => {
     getRuleKeysData();
-    // sessionStorage.removeItem("ruleKeyData");
     return () => {};
   }, []);
 
@@ -211,6 +217,8 @@ function RuleKeys() {
       <RuleKeyDataModal
         state={state}
         record={record}
+        ruleKeyData={ruleKeyObj}
+        setRuleKeyData={setRuleKeyObj}
         handleClose={
           state.editOpen
             ? () => dispatch({ type: ACTIONS.EDITCLOSE })

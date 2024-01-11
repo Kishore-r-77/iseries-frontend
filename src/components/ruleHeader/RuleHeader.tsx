@@ -144,18 +144,26 @@ function RuleHeader() {
   const handleFormSubmit = () => {
     return addApi(state, token!)
       .then((resp) => {
-        dispatch({ type: ACTIONS.ADDCLOSE });
-        setNotify({
-          isOpen: true,
-          message: `Created: ${resp?.data?.Result}`,
-          type: "success",
-        });
-        getRuleHeader();
+        if (resp?.data?.status === "SUCCESS") {
+          setNotify({
+            isOpen: true,
+            message: `Created: ${resp?.data?.body}`,
+            type: "success",
+          });
+          getRuleHeader();
+          dispatch({ type: ACTIONS.ADDCLOSE });
+        } else {
+          setNotify({
+            isOpen: true,
+            message: `Created: ${resp?.data?.body?.fieldValidationErrors?.ruleType?.errorDescription}`,
+            type: "error",
+          });
+        }
       })
-      .catch((err) => {
+      .catch((_err) => {
         setNotify({
           isOpen: true,
-          message: err?.response?.data?.error,
+          message: "Something Went Wrong",
           type: "error",
         });
       });
@@ -165,18 +173,26 @@ function RuleHeader() {
   const editFormSubmit = async () => {
     editApi(record, token!)
       .then((resp) => {
-        setNotify({
-          isOpen: true,
-          message: `Updated:${resp.data?.outputs?.ID}`,
-          type: "success",
-        });
-        dispatch({ type: ACTIONS.EDITCLOSE });
-        getRuleHeader();
+        if (resp?.data?.status === "SUCCESS") {
+          setNotify({
+            isOpen: true,
+            message: `Updated:${resp.data?.outputs?.ID}`,
+            type: "success",
+          });
+          dispatch({ type: ACTIONS.EDITCLOSE });
+          getRuleHeader();
+        } else {
+          setNotify({
+            isOpen: true,
+            message: `Created: ${resp?.data?.body?.fieldValidationErrors?.ruleType?.errorDescription}`,
+            type: "error",
+          });
+        }
       })
-      .catch((err) =>
+      .catch((_err) =>
         setNotify({
           isOpen: true,
-          message: err?.response?.data?.error,
+          message: "Something Went Wrong",
           type: "error",
         })
       );
