@@ -1,11 +1,11 @@
+import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, MenuItem, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSignIn } from "../../../../contexts/SignInContext";
 import CustomModal from "../../../../utilities/modal/CustomModal";
 import { modifyRuleKey } from "../ruleKeysApi/ruleKeysApi";
-import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 function RuleKeyDataModal({
   state,
@@ -195,7 +195,7 @@ function RuleKeyDataModal({
                   ) : null}
                   {!state.infoOpen &&
                   ruleKeyData.data.length - 1 === index &&
-                  ruleKeyData.data.length < 5 ? (
+                  ruleKeyData.data.length < 100 ? (
                     <Button
                       variant="contained"
                       onClick={() => handleAddField()}
