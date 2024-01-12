@@ -7,7 +7,8 @@ function HomePage() {
     <div>
       {authResponse ? (
         <h1>
-          Welcome, {authResponse.username}! my number is {authResponse.userid}
+          Welcome, {authResponse.username}! You're number is{" "}
+          {authResponse.userid}
         </h1>
       ) : (
         <p>Please sign in to view this page.</p>
