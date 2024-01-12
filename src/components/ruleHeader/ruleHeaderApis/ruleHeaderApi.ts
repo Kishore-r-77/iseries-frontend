@@ -5,6 +5,9 @@ export const getAllApi = (token: string) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    params: {
+      language: "E",
+    },
   });
 };
 export const getRuleKey = (
